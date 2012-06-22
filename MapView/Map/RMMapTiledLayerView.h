@@ -19,13 +19,23 @@
 
 @end
 
+//Used for drawing extensive graphics on top of the map layer
+@protocol RMMapTiledLayerViewSurlayerDrawer <NSObject>
+
+@optional
+- (void)mapTiledLayerView:(RMMapTiledLayerView *)aTiledLayerView drawSurlayer:(CALayer *)layer inContext:(CGContextRef)context;
+
+@end
+
 @interface RMMapTiledLayerView : UIView
 {
     id <RMMapTiledLayerViewDelegate> delegate;
+    id <RMMapTiledLayerViewSurlayerDrawer> surlayerDrawer;
     RMMapView *mapView;
 }
 
 @property (nonatomic, assign) id <RMMapTiledLayerViewDelegate> delegate;
+@property (nonatomic, assign) id <RMMapTiledLayerViewSurlayerDrawer> surlayerDrawer;
 
 - (id)initWithFrame:(CGRect)frame mapView:(RMMapView *)aMapView;
 

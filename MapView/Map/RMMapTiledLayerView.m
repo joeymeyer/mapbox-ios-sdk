@@ -20,6 +20,7 @@
 @implementation RMMapTiledLayerView
 
 @synthesize delegate;
+@synthesize surlayerDrawer;
 
 + (Class)layerClass
 {
@@ -126,6 +127,12 @@
 
         UIGraphicsPopContext();
     }
+    
+    UIGraphicsPushContext(context);
+    if (self.surlayerDrawer && [self.surlayerDrawer respondsToSelector:@selector(mapTiledLayerView:drawSurlayer:inContext:)]) {
+        [self.surlayerDrawer mapTiledLayerView:self drawSurlayer:layer inContext:context];
+    }
+    UIGraphicsPopContext();
 
     [pool release]; pool = nil;
 }

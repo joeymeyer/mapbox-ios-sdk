@@ -61,10 +61,19 @@ typedef enum {
 @protocol RMMercatorToTileProjection;
 @protocol RMTileSource;
 @protocol RMMapTiledLayerViewDelegate;
+@protocol RMMapTiledLayerViewSurlayerDrawer;
 
-@interface RMMapView : UIView <UIScrollViewDelegate, RMMapOverlayViewDelegate, RMMapTiledLayerViewDelegate>
+@protocol RMMapViewSurlayerDrawer <NSObject>
+
+@optional
+- (void)mapView:(RMMapView *)mapView drawSurlayer:(CALayer *)layer inContext:(CGContextRef)context;
+
+@end
+
+@interface RMMapView : UIView <UIScrollViewDelegate, RMMapOverlayViewDelegate, RMMapTiledLayerViewDelegate, RMMapTiledLayerViewSurlayerDrawer>
 {
     id <RMMapViewDelegate> delegate;
+    id <RMMapViewSurlayerDrawer> surlayerDrawer;
 
     /// projection objects to convert from latitude/longitude to meters,
     /// from projected meters to tile coordinates
@@ -97,6 +106,7 @@ typedef enum {
 }
 
 @property (nonatomic, assign) id <RMMapViewDelegate> delegate;
+@property (nonatomic, assign) id <RMMapViewSurlayerDrawer> surlayerDrawer;
 
 // View properties
 @property (nonatomic, assign) BOOL enableDragging;

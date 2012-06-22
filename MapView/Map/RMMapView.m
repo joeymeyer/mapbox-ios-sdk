@@ -104,6 +104,8 @@
     BOOL _mapScrollViewIsZooming;
 }
 
+@synthesize surlayerDrawer;
+
 @synthesize decelerationMode;
 
 @synthesize boundingMask;
@@ -945,6 +947,7 @@
 
     tiledLayerView = [[RMMapTiledLayerView alloc] initWithFrame:CGRectMake(0.0, 0.0, contentSize.width, contentSize.height) mapView:self];
     tiledLayerView.delegate = self;
+    tiledLayerView.surlayerDrawer = self;
 
     if (self.adjustTilesForRetinaDisplay && screenScale > 1.0)
     {
@@ -1134,6 +1137,15 @@
 {
     if (_delegateHasLongSingleTapOnMap)
         [delegate longSingleTapOnMap:self at:aPoint];
+}
+
+//Tiled layer surlayer drawer
+
+- (void)mapTiledLayerView:(RMMapTiledLayerView *)aTiledLayerView drawSurlayer:(CALayer *)layer inContext:(CGContextRef)context
+{
+    if (self.surlayerDrawer && [self.surlayerDrawer respondsToSelector:@selector(mapView:drawSurlayer:inContext:)]) {
+        [self.surlayerDrawer mapView:self drawSurlayer:layer inContext:context];
+    }
 }
 
 // Detect dragging/zooming
